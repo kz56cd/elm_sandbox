@@ -1,6 +1,7 @@
 module Main exposing (..)
 
-import Html exposing (Html, text, p)
+import Html exposing (Html, text, p, div, button)
+import Html.Events exposing (onClick)
 
 
 main : Program Never Model Msg
@@ -14,6 +15,7 @@ main =
 
 
 -- ///////////////////////////////////////
+-- Model
 
 
 type alias Model =
@@ -29,6 +31,7 @@ initModel =
 
 type Msg
     = NoOp
+    | Increase
 
 
 update :
@@ -40,12 +43,36 @@ update msg model =
         NoOp ->
             model
 
+        Increase ->
+            { model | count = model.count + 1 }
+
+
+
+-- ///////////////////////////////////////
+-- View
+
 
 view :
     Model
     -> Html Msg -- Modelを受け取りHtmlを返す
 view model =
+    div []
+        [ counter model
+        , increaseButton
+        ]
+
+
+counter : Model -> Html Msg
+counter model =
     p []
         [ text "count: "
         , text (toString model.count)
+        ]
+
+
+increaseButton : Html Msg
+increaseButton =
+    div []
+        [ button [ onClick Increase ]
+            [ text "+1" ]
         ]
